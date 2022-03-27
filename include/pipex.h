@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 15:10:57 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/03/23 16:14:19 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/03/24 14:54:42 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 #include<stdlib.h>
 #include<unistd.h>
 #include<fcntl.h>
+#include<stdarg.h>
+#include<string.h>
 
 typedef struct s_data {
 	char *ft_path;
@@ -64,5 +66,21 @@ void	child2_process_exe(t_data *data, char *envp[], char **av);
 char	*get_thecmd(t_data data);
 
 void	free_all(t_data *data);
+
+//* Prototypes of ft_printf *****************************//
+
+int		ft_2lowerhexa(unsigned int nb);
+int		ft_checkprintf(char a, va_list *av);
+int		ft_checksize(long long nb);
+int		ft_printf(const char *format, ...);
+int		ft_point(long unsigned nb);
+int		ft_putdeci(unsigned int nb);
+int		ft_upperhexa(unsigned int nb);
+int		ft_lowerhexa(unsigned long nb);
+int		ft_putchar(char c);
+int		ft_putstr(char *str);
+int		ft_putnbr(long int nb);
+
+//********************************************/
 
 #endif

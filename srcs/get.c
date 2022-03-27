@@ -6,12 +6,18 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/12 12:56:10 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/03/23 15:40:34 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/03/26 19:44:58 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"../include/pipex.h"
 #include<stdio.h>
+
+void	check_file(char	*str)
+{
+	if (access(str, R_OK) != 0)
+		perror(str);
+}
 
 char	*get_str(char **envp, int i, char *path)
 {

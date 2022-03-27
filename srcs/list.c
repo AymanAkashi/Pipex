@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 17:56:10 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/03/23 16:10:42 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/03/26 19:39:56 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,15 @@ char	*str_space(char *str)
 	return (dest);
 }
 
+void	data_path(t_data *data, char *envp[])
+{
+	data->ft_path = get_path(envp);
+	if (!data->ft_path)
+		data->ft_path = ft_strdup("");
+	data->path_spl = ft_split(data->ft_path, ':');
+	free(data->ft_path);
+}
+
 char	**add_back_slash(char *envp[], t_data *data)
 {
 	int		i;
@@ -38,15 +47,17 @@ char	**add_back_slash(char *envp[], t_data *data)
 	char	**str;
 
 	i = 0;
-	data->ft_path = get_path(envp);
-	data->path_spl = ft_split(data->ft_path, ':');
-	free(data->ft_path);
+	data_path(data, envp);
 	str = (char **)malloc(sizeof(char *) * (counter(data->path_spl) + 1));
+	if (!str)
+		return (NULL);
 	while (data->path_spl[i])
 	{
 		j = -1;
 		str[i] = (char *)malloc(sizeof(char)
 				* (ft_strlen(data->path_spl[i]) + 2));
+		if (!str[i])
+			return (NULL);
 		while (data->path_spl[i][++j])
 			str[i][j] = data->path_spl[i][j];
 		str[i][j] = '/';

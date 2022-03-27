@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 18:02:22 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/03/23 16:15:42 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/03/26 19:44:51 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,20 +30,56 @@ int	counter(char **map)
 	return (i);
 }
 
-void	check_file(char	*str)
+void	in_file_not_found(t_data *data, char **av, char *envp[])
 {
-	if (access(str, R_OK) != 0)
-		perror(str);
+	if (pipe(data->end) == -1)
+		ft_exit_ps("pipe failed\n", 1);
+	data->pid1 = 1;
+	data->pid2 = fork();
+	if (data->pid2 < 0)
+		perror("Fork :");
+	if (data->pid2 == 0)
+		child2_process_exe(data, envp, av);
+	close(data->end[0]);
+	close(data->end[1]);
+	waitpid(data->pid1, NULL, 0);
+	waitpid(data->pid2, NULL, 0);
+	free_all(data);
+	exit(1);
 }
 
-void	open_file(t_data *data, char **av)
+void	out_file_not_permission(t_data *data, char **av, char *envp[])
+{
+	if (pipe(data->end) == -1)
+		ft_exit_ps("pipe failed\n", 1);
+	data->pid1 = fork();
+	if (data->pid1 < 0)
+		perror("Fork :");
+	if (data->pid1 == 0)
+		child_process_exe(data, envp, av);
+	data->pid2 = 1;
+	close(data->end[0]);
+	close(data->end[1]);
+	waitpid(data->pid1, NULL, 0);
+	waitpid(data->pid2, NULL, 0);
+	free_all(data);
+	exit(1);
+}
+
+void	open_file(t_data *data, char **av, char *envp[])
 {
 	data->infile = open(av[1], O_RDONLY);
 	data->outfile = open(av[4], O_CREAT | O_RDWR | O_TRUNC, 0000644);
 	if (data->infile < 0)
+	{
 		perror(av[1]);
+		in_file_not_found(data, av, envp);
+	}
 	if (data->outfile < 0)
-		perror(av[4]);
+	{
+		perror(av[1]);
+		out_file_not_permission(data, av, envp);
+	}
 }
 
 int	main(int ac, char **av, char *envp[])
@@ -52,8 +88,8 @@ int	main(int ac, char **av, char *envp[])
 
 	if (ac != 5)
 		ft_exit_ps("Error argement\n", 1);
-	open_file(&data, av);
 	data.path = add_back_slash(envp, &data);
+	open_file(&data, av, envp);
 	if (pipe(data.end) == -1)
 		ft_exit_ps("pipe failed\n", 1);
 	data.pid1 = fork();
@@ -71,6 +107,5 @@ int	main(int ac, char **av, char *envp[])
 	waitpid(data.pid1, NULL, 0);
 	waitpid(data.pid2, NULL, 0);
 	free_all(&data);
-	while(1);
 	return (0);
 }

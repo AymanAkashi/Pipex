@@ -1,31 +1,66 @@
-NAME = pipex
+# ******************************** Directories *********************************
+INCLUDES_DIR	:= include
+SRCS_DIR		:= srcs
+OBJS_DIR		:= obj
+LIBS_DIR		:=
 
-SRCS_DIR = srcs
+# *********************************** Files ************************************
+NAME	:= pipex
+MAIN	:=
+SRCS	:= $(shell ls $(SRCS_DIR))
+OBJS	:= $(SRCS:.c=.o)
+HEADERS	:= $(shell ls $(INCLUDES_DIR))
 
-OBJS_DIR = obj
+# ****************************** Compiler Options ******************************
+CC			:= cc
+CFLAGS		:= -Wall -Wextra -Werror
+INCLUDES	:= -I $(INCLUDES_DIR)
+LIBS		:=
 
-INCLUDE = include
+# ******************************* Other commands *******************************
+RM		:= rm -rf
+MKDIR	:= mkdir -p
+# ***********************************Color**************************************
 
-SRCS = pipex.c ft_split.c ft_atoi.c ft_strlen.c ft_strcmp.c ft_strdup.c ft_strncmp.c ft_strjoin.c ft_exit.c get.c child.c\
-		ft_lstnew.c ft_lstadd_back.c list.c free.c
+NONE='\033[0m'
+GREEN='\033[32m'
+YELLOW='\033[33m'
+GRY='\033[2;37m'
+CURSIVE='\033[3m'
+RED ='\033[0;31m'
+BLUE = '\033[0;34m'
 
-OBJS :=$(SRCS:.c=.o)
+# ********************************** Targets ***********************************
+all: $(NAME)
 
-CFLAGS = -Wall -Wextra -Werror -g
+$(NAME): $(addprefix $(OBJS_DIR)/, $(OBJS)) $(MAIN) \
+			$(addprefix $(INCLUDES_DIR)/, $(HEADERS))
+		@$(CC) $(CFLAGS) $(INCLUDES) $(LIBS) $(addprefix $(OBJS_DIR)/, $(OBJS)) \
+		$(MAIN) -o $(NAME)
+			@echo $(CURSIVE)$(GREEN)"					 ██▓███   ██▓ ██▓███  ▓█████ ▒██   ██▒ "$(NONE)
+			@echo $(CURSIVE)$(GREEN)"					▓██░  ██▒▓██▒▓██░  ██▒▓█   ▀ ▒▒ █ █ ▒░ "$(NONE)
+			@echo $(CURSIVE)$(GREEN)"					▓██░ ██▓▒▒██▒▓██░ ██▓▒▒███   ░░  █   ░ "$(NONE)
+			@echo $(CURSIVE)$(GREEN)"					▒██▄█▓▒ ▒░██░▒██▄█▓▒ ▒▒▓█  ▄  ░ █ █ ▒  "$(NONE)
+			@echo $(CURSIVE)$(GREEN)"					▒██▒ ░  ░░██░▒██▒ ░  ░░▒████▒▒██▒ ▒██▒ "$(NONE)
+			@echo $(CURSIVE)$(GREEN)"					▒▓▒░ ░  ░░▓  ▒▓▒░ ░  ░░░ ▒░ ░▒▒ ░ ░▓ ░ "$(NONE)
+			@echo $(CURSIVE)$(GREEN)"					░▒ ░      ▒ ░░▒ ░      ░ ░  ░░░   ░▒ ░ "$(NONE)
+			@echo $(CURSIVE)$(GREEN)"					░░        ▒ ░░░          ░    ░    ░   "$(NONE)
+			@echo $(CURSIVE)$(GREEN)"					          ░              ░  ░ ░    ░   "$(NONE)
+			@echo $(CURSIVE)$(BLUE) "					    - Compiling $(NAME) Mandatory... " $(NONE)
+			@echo $(GRY)"	                 - ------------------------------🅓 🅞 🅝 🅔----------------------------- -"$(NONE)                          
 
-
-all: $(NAME) $(INCLUDE)
-
-$(NAME): $(addprefix $(OBJS_DIR)/, $(OBJS))
-		gcc $(CFLAGS) $(addprefix $(OBJS_DIR)/, $(OBJS)) -o ${NAME}
-
-$(OBJS_DIR)/%.o: ${SRCS_DIR}/%.c
-		@mkdir -p obj
-		gcc $(CFLAGS) -c $< -I$(INCLUDE) -o $@
+$(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c $(addprefix $(INCLUDES_DIR)/, $(HEADERS)) 
+	@$(MKDIR) $(OBJS_DIR)
+	@$(CC) $(CFLAGS) $(INCLUDES) -c -o $@ $<
 
 clean:
-		rm -rf obj
-fclean: clean
-		rm -rf $(NAME) $(BONUS) $(OBJS_BONUS)
+	@$(RM) $(OBJS_DIR)
+	@echo $(CURSIVE)$(YELLOW) " 						- Removing object files..." $(NONE)
+
+fclean:	clean
+	@$(RM) $(NAME)
+	@echo $(CURSIVE)$(YELLOW) " 						- Removing $(NAME)..." $(NONE)
+
 re: fclean all
+
 .PHONY: all clean fclean re
