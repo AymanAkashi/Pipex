@@ -6,12 +6,12 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/12 12:56:10 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/04/20 13:33:25 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/03/29 13:35:49 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"../include/pipex.h"
-#include<stdio.h>
+#include"../include/pipex_bonus.h"
+
 
 void	check_file(char	*str)
 {

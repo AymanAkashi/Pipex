@@ -6,11 +6,11 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 17:56:10 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/04/20 13:24:32 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/04/20 13:04:44 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"../include/pipex.h"
+#include"../include/pipex_bonus.h"
 
 char	*str_space(char *str)
 {
@@ -21,6 +21,8 @@ char	*str_space(char *str)
 	while (str[i] && str[i] != ' ')
 		i++;
 	dest = malloc(sizeof(char) * (i + 1));
+	if(!dest)
+		return (NULL);
 	i = 0;
 	while (str[i] && str[i] != ' ')
 	{
@@ -55,12 +57,12 @@ char	**add_back_slash(char *envp[], t_data *data)
 	{
 		j = -1;
 		str[i] = (char *)malloc(sizeof(char)
-				* (ft_strlen(data->path_spl[i]) + 1));
+				* (ft_strlen(data->path_spl[i]) + 2));
 		if (!str[i])
 			return (NULL);
 		while (data->path_spl[i][++j])
 			str[i][j] = data->path_spl[i][j];
-		// str[i][j] = '/';
+		str[i][j] = '/';
 		str[i][j + 1] = '\0';
 		i++;
 	}

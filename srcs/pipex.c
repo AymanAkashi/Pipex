@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 18:02:22 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/03/26 19:44:51 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/04/20 15:46:42 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	open_file(t_data *data, char **av, char *envp[])
 	}
 	if (data->outfile < 0)
 	{
-		perror(av[1]);
+		perror(av[4]);
 		out_file_not_permission(data, av, envp);
 	}
 }
