@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 16:33:36 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/04/19 17:52:43 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/04/20 16:23:34 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,13 @@
 #include<fcntl.h>
 #include<stdarg.h>
 #include<string.h>
+#include <sys/wait.h>
 
 typedef struct s_pip{
 		char *cmd;// command
 		char *cmd_path;
 		char **spl;
+		int is_program;
 		struct s_pip *next; // next command
 } t_pip;
 
@@ -108,5 +110,8 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 char	*ft_strjoin_g(const char *s1, const char *s2);
 char	*ft_save_remainder(char *line, char *remainder);
 //********************************************/
+
+
+void	free_array(char **str);
 
 #endif

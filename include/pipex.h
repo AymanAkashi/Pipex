@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 15:10:57 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/03/24 14:54:42 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/04/20 16:05:46 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include<fcntl.h>
 #include<stdarg.h>
 #include<string.h>
+#include <sys/wait.h>
 
 typedef struct s_data {
 	char *ft_path;

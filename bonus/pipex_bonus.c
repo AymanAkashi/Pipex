@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 18:02:22 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/04/20 15:51:37 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/04/21 16:08:40 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,24 @@ int nbr_pipe(t_data data, int ac)
 	return (num_cmd);
 }
 
+// char *ft_spl_cmd(char *str)
+// {
+// 	char **spl;
+// 	char *dest;
+// 	int i;
+
+// 	i = 0;
+// 	spl = ft_split(str, ' ');
+// 	dest = ft_strdup(spl[0]);
+// 	// while (spl[i])
+// 	// {
+// 	// 	free(spl[i]);
+// 	// 	i++;
+// 	// }
+// 	// free(spl);
+// 	return (dest);
+// }
+
 t_pip	*pip_alloc(char **av, char *envp[], int ac,int here_doc)
 {
 	t_pip *pip;
@@ -110,8 +128,8 @@ t_pip	*pip_alloc(char **av, char *envp[], int ac,int here_doc)
 		i++;
 	while (i < ac - 1)
 	{
-		pip->cmd = ft_split(av[i],' ')[0];
 		pip->spl = ft_split(av[i],' ');
+		pip->cmd = ft_strdup(pip->spl[0]);
 		i++;
 		if(i < ac - 1)
 			{
@@ -124,28 +142,73 @@ t_pip	*pip_alloc(char **av, char *envp[], int ac,int here_doc)
 	}
 	return (head);
 }
+void	free_single_pip(t_pip *data)
+{
+	free(data->cmd);
+	free(data->cmd_path);
+	free_array(data->spl);
+}
+
+void	next_cmd(t_data *data, char *cmd)
+{
+	while(data->pip)
+	{
+		if(ft_strcmp(cmd,(data->pip)->cmd) == 0)
+			break;
+		free_single_pip(data->pip);
+	 	data->pip = (data->pip)->next;
+		data->num_cmd--;
+	}
+		data->pip = (data->pip)->next; 
+}
+
+char	*check_pr(char *path,char *cmd, t_pip *pip)
+{
+	char *c;
+
+	if(access(cmd, F_OK) == 0)
+	{
+
+	if(access(cmd, X_OK) == 0)
+		 return(ft_strdup(cmd));
+	else
+	{	
+		perror(cmd);
+		pip->is_program = 1;
+		return (ft_strdup(cmd));
+	}
+	}
+	c = ft_strjoin( path, cmd);
+	if (access(c, 0) == 0)
+		return (c);
+	else
+		{
+			free(c);
+			return (NULL);
+		}
+}
 
 void	check_path(t_data *data)
 {
 	t_pip	*tmp;
-	char	*c;
-	int		i;
 
 	tmp = data->pip;
-	while (tmp)
+	while (tmp &&  tmp->cmd)
 	{
-		i = 0;
-		while (data->path[i])
+		data->j = -1;
+		while (data->path[++(data->j)])
 		{
-			c = ft_strjoin( data->path[i], tmp->cmd);
-			if (access(c, 0) == 0)
+			tmp->cmd_path = check_pr(data->path[data->j], tmp->cmd, tmp);
+			if (tmp->cmd_path)
 			{
-				tmp->cmd_path = ft_strdup(c);
-				free(c);
-				break;
+				if (tmp->is_program == 1)
+				{
+					next_cmd(data,tmp->cmd);
+					break;
+				}
+				else
+					break;
 			}
-			free(c);
-			i++;
 		}
 		if (tmp->cmd_path == NULL)
 			perror(tmp->cmd);
@@ -234,7 +297,7 @@ void	pipex(t_data *data, char *envp[])
 			close_pipes(data);
 			head = get_p(data, data->i);
 			execve(head->cmd_path, head->spl, envp);
-			write(2, "C2ammand not found\n", 20);
+			write(2, "Cammand not found\n", 19);
 			free_all(data);
 			exit(1);
 		}
@@ -256,11 +319,14 @@ void	valid_here_doc(char **av)
 		write(1, "here_doc >", 10);
 		str = get_next_line(0);
 		if(!ft_strncmp(str, limite,ft_strlen(limite)))
-			break ;
+			{	
+				free(str);
+				free(limite);
+				break ;
+			}
 		write(file, str, ft_strlen(str));
 		free(str);
 	}
-	free(limite);
 }
 void	creat_pipe(t_data *data)
 {
