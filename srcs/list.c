@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 17:56:10 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/04/20 13:24:32 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/04/24 15:32:21 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ char	**add_back_slash(char *envp[], t_data *data)
 			return (NULL);
 		while (data->path_spl[i][++j])
 			str[i][j] = data->path_spl[i][j];
-		// str[i][j] = '/';
 		str[i][j + 1] = '\0';
 		i++;
 	}

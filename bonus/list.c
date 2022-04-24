@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 17:56:10 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/04/20 13:04:44 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/04/24 15:07:47 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*str_space(char *str)
 	while (str[i] && str[i] != ' ')
 		i++;
 	dest = malloc(sizeof(char) * (i + 1));
-	if(!dest)
+	if (!dest)
 		return (NULL);
 	i = 0;
 	while (str[i] && str[i] != ' ')

@@ -6,17 +6,23 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/12 12:56:10 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/03/29 13:35:49 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/04/24 14:55:55 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"../include/pipex_bonus.h"
 
-
-void	check_file(char	*str)
+t_pip	*get_p(t_data *data, int num_cmd)
 {
-	if (access(str, R_OK) != 0)
-		perror(str);
+	t_pip	*tmp;
+	int		i;
+
+	i = -1;
+	tmp = data->pip;
+	while (++i < num_cmd)
+		if (tmp->next)
+			tmp = tmp->next;
+	return (tmp);
 }
 
 char	*get_str(char **envp, int i, char *path)

@@ -7,7 +7,7 @@ BONUS_OBJS_DIR	:= obj_bonus
 
 # *********************************** Files ************************************
 NAME	:= pipex
-NAME_BONUS	:= pipex_bonus
+NAME_BONUS	:= pipex
 SRCS	:= $(shell ls $(SRCS_DIR))
 OBJS	:= $(SRCS:.c=.o)
 BONUS	:= $(shell ls $(BONUS_DIR))
@@ -39,62 +39,27 @@ CHANGE = \033[0;35m
 # ********************************** Targets ***********************************
 
  tab = "\t"
-all: $(NAME)
+all: ET_SRCS
 
-$(NAME): $(addprefix $(OBJS_DIR)/, $(OBJS)) $(MAIN) \
-			$(addprefix $(INCLUDES_DIR)/, $(HEADERS))
-		@$(CC) $(CFLAGS) $(INCLUDES) $(LIBS) $(addprefix $(OBJS_DIR)/, $(OBJS)) $(MAIN) -o $(NAME)
-			@make DRAW
-			@echo $(CURSIVE)$(BLUE) "					   - Compiling $(NAME) Mandatory... " $(NONE)
-			@echo
-			@sleep 0.05
-			@echo $(BLUE)"	                 - ------------------------------🅓 🅞 🅝 🅔----------------------------- -"$(NONE)
-			@sleep 0.05
-			@echo ""
-			@sleep 0.05
-			@echo $(CURSIVE)$(GRY)"To use pipex Examples:\n	\044> ./pipex infile "cmd1" "cmd2" outfile\n"
-			@echo $(GRY)" infile      : exist file with read permission\n outfile     : will create a new file\n cmd1 & cmd2 : commands shell"                        
-			@echo ""
 
-$(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c $(addprefix $(INCLUDES_DIR)/, $(HEADERS)) 
-			@$(MKDIR) $(OBJS_DIR)
-			@$(CC) $(CFLAGS) $(INCLUDES) -c -o $@ $<
+bonus : ET_BONUS
 
-bonus : $(NAME_BONUS)
-$(NAME_BONUS): $(addprefix $(BONUS_OBJS_DIR)/, $(BONUS_OBJS)) 
-			@$(CC) $(CFLAGS) $(INCLUDES) $(addprefix $(BONUS_OBJS_DIR)/, $(BONUS_OBJS)) -o $(NAME_BONUS)
+ET_SRCS :
+			@cd $(SRCS_DIR) && make
 
-$(BONUS_OBJS_DIR)/%.o: $(BONUS_DIR)/%.c $(addprefix $(INCLUDES_DIR)/, $(HEADERS)) 
-					@$(MKDIR) $(BONUS_OBJS_DIR)
-					@$(CC) $(CFLAGS) $(INCLUDES) -c -o $@ $<
-
-DRAW : 		
-			@echo
-			@echo $(CURSIVE)$(RED)"					 ██▓███   ██▓ ██▓███  ▓█████ ▒██   ██▒ "$(NONE)
-			@sleep 0.05
-			@echo $(CURSIVE)$(RED)"					▓██░  ██▒▓██▒▓██░  ██▒▓█   ▀ ▒▒ █ █ ▒░ "$(NONE)
-			@sleep 0.05
-			@echo $(CURSIVE)$(RED)"					▓██░ ██▓▒▒██▒▓██░ ██▓▒▒███   ░░  █   ░ "$(NONE)
-			@sleep 0.05
-			@echo $(CURSIVE)$(RED)"					▒██▄█▓▒ ▒░██░▒██▄█▓▒ ▒▒▓█  ▄  ░ █ █ ▒  "$(NONE)
-			@sleep 0.05
-			@echo $(CURSIVE)$(RED)"					▒██▒ ░  ░░██░▒██▒ ░  ░░▒████▒▒██▒ ▒██▒ "$(NONE)
-			@sleep 0.05
-			@echo $(CURSIVE)$(RED)"					▒▓▒░ ░  ░░▓  ▒▓▒░ ░  ░░░ ▒░ ░▒▒ ░ ░▓ ░ "$(NONE)
-			@sleep 0.05
-			@echo $(CURSIVE)$(RED)"					░▒ ░      ▒ ░░▒ ░      ░ ░  ░░░   ░▒ ░ "$(NONE)
-			@sleep 0.05
-			@echo $(CURSIVE)$(RED)"					░░        ▒ ░░░          ░    ░    ░   "$(NONE)
-			@sleep 0.05
-			@echo $(CURSIVE)$(RED)"					          ░              ░  ░ ░    ░   "$(NONE)
-			@sleep 0.05
-			@echo
 clean:
-	@$(RM) $(OBJS_DIR) $(BONUS_OBJS_DIR)
+	@cd $(BONUS_DIR) && make clean
+	@cd $(SRCS_DIR) && make clean
 	@echo $(CURSIVE)$(YELLOW) " 						- Removing object files..." $(NONE)
 
+ET_BONUS : 
+			@cd $(BONUS_DIR) && make
+
+
 fclean:	clean
-	@$(RM) $(NAME) $(NAME_BONUS)
+	@cd $(BONUS_DIR) && make clean
+	@cd $(SRCS_DIR) && make clean
+	@rm -rf $(NAME)
 	@echo $(CURSIVE)$(YELLOW) " 						- Removing $(NAME)..." $(NONE)
 
 re: fclean all

@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 18:02:22 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/04/20 15:46:42 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/04/23 23:36:43 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void	in_file_not_found(t_data *data, char **av, char *envp[])
 		child2_process_exe(data, envp, av);
 	close(data->end[0]);
 	close(data->end[1]);
-	waitpid(data->pid1, NULL, 0);
 	waitpid(data->pid2, NULL, 0);
 	free_all(data);
 	exit(1);
@@ -61,7 +60,6 @@ void	out_file_not_permission(t_data *data, char **av, char *envp[])
 	close(data->end[0]);
 	close(data->end[1]);
 	waitpid(data->pid1, NULL, 0);
-	waitpid(data->pid2, NULL, 0);
 	free_all(data);
 	exit(1);
 }
